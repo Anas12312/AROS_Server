@@ -8,6 +8,7 @@ const login = async ({
     if(rowCount) {
         return rows[0]
     }
+    return null
 }
 
 
