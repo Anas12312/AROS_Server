@@ -9,9 +9,24 @@ const login = async ({
         return rows[0]
     }
     return null
+};
+
+const signup = async ({
+    first_name,
+    last_name,
+    email,
+    password
+}) => {
+    const { rows, rowCount } = await pool.query('INSERT INTO "users" (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING *', [first_name, last_name, email, password])
+    console.log(rowCount)
+    if(rowCount) {
+        return rows[0]
+    }
+    return null
 }
 
 
 module.exports = {
-    login
+    login,
+    signup
 }
