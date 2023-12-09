@@ -21,8 +21,8 @@ router.post('/login', async (req, res) => {
 // Signup
 router.post('/signup', async (req, res) => {
     const payload = {
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
         email: req.body.email,
         password: req.body.password
     }

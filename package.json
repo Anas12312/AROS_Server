@@ -4,7 +4,8 @@
   "description": "AROS_Server Anas Hesham",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "create-tables": "node ./src/database/tableCreation.js"
   },
   "author": "",
   "license": "ISC",

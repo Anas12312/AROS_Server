@@ -12,13 +12,12 @@ const login = async ({
 };
 
 const signup = async ({
-    first_name,
-    last_name,
+    firstName,
+    lastName,
     email,
     password
 }) => {
-    const { rows, rowCount } = await pool.query('INSERT INTO "users" (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING *', [first_name, last_name, email, password])
-    console.log(rowCount)
+    const { rows, rowCount } = await pool.query('INSERT INTO "users" (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING *', [firstName, lastName, email, password])
     if(rowCount) {
         return rows[0]
     }

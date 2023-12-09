@@ -11,8 +11,8 @@ const login = async ({ email, password }) => {
     })
 }
 
-const signup = async ({ first_name, last_name, email, password }) => {
-    if(!first_name || !last_name || !email || !password) {
+const signup = async ({ firstName, lastName, email, password }) => {
+    if(!firstName || !lastName || !email || !password) {
         return 'All fields are required!'
     }
     if(!validator.isEmail(email)) {
@@ -22,8 +22,8 @@ const signup = async ({ first_name, last_name, email, password }) => {
         return 'Password must be at least 6 characters!'
     }
     return await User.signup({
-        first_name,
-        last_name,
+        firstName,
+        lastName,
         email,
         password
     })
