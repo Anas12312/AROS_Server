@@ -1,4 +1,5 @@
-const obstacles = require('../models/obstacles')
+const obstacles = require('../models/obstacles');
+const { calculateDistance } = require('./calculateDistance');
 
 //Add Obstacle
 const addObstacle = async ({ userId, latitude, longitude, imageURL, type, status, numberOfReports }) => {
@@ -22,8 +23,15 @@ const addObstacle = async ({ userId, latitude, longitude, imageURL, type, status
 const getAllObstacles = async () => {
     return await obstacles.getAllObstacles()
 };
-
+const getNearbyObstacles = async (lat, lng) => {
+    const allObstacles = await getAllObstacles()
+    const nearbyObstacles = allObstacles.filter((obstacle) => {
+        return calculateDistance(lat, lng, obstacle.latitude, obstacle.longitude) < 3
+    })
+    return nearbyObstacles
+}
 module.exports = {
     addObstacle,
-    getAllObstacles
+    getAllObstacles,
+    getNearbyObstacles
 }

@@ -1,11 +1,11 @@
 const express = require('express')
-const { addObstacle, getAllObstacles } = require('../services/obstacles')
+const { addObstacle, getAllObstacles, getNearbyObstacles } = require('../services/obstacles')
 const auth = require('../middleware/auth'); 
 
 const router = new express.Router
 
 //Add Obstacle
-router.post('/addObstacle', async (req, res) => {
+router.post('/obstacles', async (req, res) => {
     const payload = {
         userId: req.body.userId,
         latitude: req.body.latitude,
@@ -13,7 +13,7 @@ router.post('/addObstacle', async (req, res) => {
         imageURL: req.body.imageURL,
         type: req.body.type,
         status: req.body.status,
-        numberOfReports: req.body.numberOfReports,
+        numberOfReports: req.body.numberOfReports
     };
     const obstacle = await addObstacle(payload);
 
@@ -30,9 +30,9 @@ router.post('/addObstacle', async (req, res) => {
 
 
 //Get All Obstacles
-router.get('/getAllObstacles', auth, async (req, res) => {
+router.get('/obstacles', auth, async (req, res) => {
     const obstacles = await getAllObstacles();
-
+ 
     if(!obstacles) {
         return res.status(400).send({
             message: 'Obstacles not found!'
@@ -42,5 +42,24 @@ router.get('/getAllObstacles', auth, async (req, res) => {
     return res.send(obstacles)
 });
 
+//Get Nearby Obstacles
+router.get('/getNearbyObstacles', async (req, res) => {
+    const lat = req.query.lat
+    const lng = req.query.lng
+    if(!lat || !lng) {
+        return res.status(400).send({
+            message: "Latitude and Longitude are required"
+        })
+    }
+    const obstacles = await getNearbyObstacles(lat, lng);
+
+    if(!obstacles) {
+        return res.status(400).send({
+            message: 'Obstacles not found!'
+        })
+    };
+
+    return res.send(obstacles)
+});
 
 module.exports = router

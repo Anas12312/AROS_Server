@@ -15,11 +15,9 @@ const calculateDistance = (lat1, lon1, lat2, lon2) => {
 
     // Distance in kilometers
     const distance = R * c;
-
     return distance;
 }
 
-const distance = calculateDistance(31.34139585281801,  29.85098617469103,  31.3402313105083, 29.850959093539217);
-console.log(`Distance: ${distance.toFixed(2)} km`);
-
-export default calculateDistance;
+module.exports = {
+    calculateDistance
+};
