@@ -1,22 +1,31 @@
-const express = require('express')
-const { login, signup } = require('../services/user')
+const express = require('express');
+const { login, signup } = require('../services/user');
 
-const router = new express.Router
+const router = new express.Router();
 
 // Login
 router.post('/login', async (req, res) => {
     const payload = {
         email: req.body.email,
         password: req.body.password
+    };
+
+    const result = await login(payload);
+
+    if (result === 'Invalid Email!') {
+        return res.status(400).send({
+            message: 'Invalid Email!'
+        });
     }
-    const user = await login(payload)
-    if(!user) {
+
+    if (!result.user) {
         return res.status(400).send({
             message: 'Authentication Failed! Email or Password might be wrong!'
-        })
+        });
     }
-    return res.send(user)
-})
+
+    return res.status(200).send(result);
+});
 
 // Signup
 router.post('/signup', async (req, res) => {
@@ -24,35 +33,24 @@ router.post('/signup', async (req, res) => {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
-        password: req.body.password
-    }
-    const user = await signup(payload)
+        password: req.body.password,
+        role: req.body.role
+    };
 
-    if(!user) {
+    const result = await signup(payload);
+
+    if (!result.user) {
         return res.status(400).send({
             message: 'Signup Failed!'
-        })
-    };
-
-    if(user === 'All fields are required!') {
-        return res.status(400).send({
-            message: 'All fields are required!'
-        })
-    };
-
-    if(user === 'Invalid Email!') {
-        return res.status(400).send({
-            message: 'Invalid Email!'
-        })
-    };
-
-    if(user === 'Password must be at least 6 characters!') {
-        return res.status(400).send({
-            message: 'Password must be at least 6 characters!'
-        })
+        });
     }
 
-    return res.send(user)
+    if (result === 'All fields are required!' || result === 'Invalid Email!' || result === 'Password must be at least 6 characters!') {
+        return res.status(400).send({
+            message: result
+        });
+    }
+    return res.status(201).send(result);
 });
 
-module.exports = router
+module.exports = router;
