@@ -28,9 +28,7 @@ const pool = require("./postgres");
    number_of_reports INT
   );
   `;
-
-
-
+  
   try {
     await pool.query(createExtension);
     await pool.query(userSchema);
